@@ -1,0 +1,133 @@
+<!-- Save as index.html -->
+<!DOCTYPE html>
+<html>
+<head>
+  <title>AI Assistant</title>
+  <style>
+    body { font-family: sans-serif; background: #fff; color: #222; transition: background 0.3s, color 0.3s; }
+    #chat { height: 300px; overflow-y: auto; border: 1px solid #ccc; padding: 10px; background: #fafafa; }
+    #input { width: 80%; }
+    .dark-mode {
+      background: #181a1b !important;
+      color: #eee !important;
+    }
+    .dark-mode #chat {
+      background: #23272a !important;
+      border-color: #444 !important;
+      color: #eee !important;
+    }
+    .dark-mode input, .dark-mode button {
+      background: #23272a !important;
+      color: #eee !important;
+      border-color: #444 !important;
+    }
+  </style>
+</head>
+<body>
+  <h2>AI Assistant</h2>
+  <button onclick="toggleDarkMode()" id="darkModeBtn">Enable Dark Mode</button>
+  <input type="file" id="fileInput" accept=".json" style="display:none">
+  <button onclick="document.getElementById('fileInput').click()">Load knowledge.json</button>
+  <button onclick="downloadKnowledge()">Export knowledge.json</button>
+  <div id="chat"></div>
+  <input id="input" type="text" placeholder="Type your message..." autofocus>
+  <button onclick="send()">Send</button>
+  <script>
+    // Default knowledge base
+    const defaultKnowledge = {
+      "hi": "Hi there! How are you doing?",
+      "hello": "Hi there! How are you doing",
+      "say uwu": "UwU",
+      "what is php?": "PHP is the worst coding language on the planet, that is used for websites for only backend but it can be used for frontend(kinda).",
+      "what is php": "PHP is the worst coding language on the planet, that is used for websites for only backend but it can be used for frontend(kinda).",
+      "what is rizz": "Rizz is a slang word used by genZ and gen alpha and it is short for carisma.",
+      "what is rizz?": "Rizz is a slang word used by genZ and gen alpha and it is short for carisma."
+    };
+
+    // Load from localStorage or use default
+    let knowledge = {};
+    if (localStorage.getItem('knowledge')) {
+      knowledge = JSON.parse(localStorage.getItem('knowledge'));
+    } else {
+      knowledge = {...defaultKnowledge};
+      localStorage.setItem('knowledge', JSON.stringify(knowledge));
+    }
+
+    const chat = document.getElementById('chat');
+    const input = document.getElementById('input');
+    const fileInput = document.getElementById('fileInput');
+    const darkModeBtn = document.getElementById('darkModeBtn');
+
+    function addMessage(sender, text) {
+      chat.innerHTML += `<b>${sender}:</b> ${text}<br>`;
+      chat.scrollTop = chat.scrollHeight;
+    }
+
+    function send() {
+      const userInput = input.value.trim().toLowerCase();
+      if (!userInput) return;
+      addMessage('You', userInput);
+      input.value = '';
+
+      // Special check for translate, in, arabic
+      if (['translate', 'in', 'arabic'].every(word => userInput.includes(word))) {
+        addMessage('AI', 'Please translate at https://translate.google.com');
+        return;
+      }
+
+      if (knowledge[userInput]) {
+        addMessage('AI', knowledge[userInput]);
+      } else {
+        const reply = prompt("I don't know how to respond to that. How should I reply?");
+        if (reply) {
+          knowledge[userInput] = reply;
+          localStorage.setItem('knowledge', JSON.stringify(knowledge));
+          addMessage('AI', "Got it! I'll remember that.");
+        }
+      }
+    }
+
+    input.addEventListener('keydown', function(e) {
+      if (e.key === 'Enter') send();
+    });
+
+    // Load knowledge.json from file
+    fileInput.addEventListener('change', function(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        try {
+          knowledge = JSON.parse(e.target.result);
+          localStorage.setItem('knowledge', JSON.stringify(knowledge));
+          addMessage('AI', "Knowledge loaded from file.");
+        } catch {
+          addMessage('AI', "Failed to load knowledge.json.");
+        }
+      };
+      reader.readAsText(file);
+    });
+
+    // Export knowledge.json
+    function downloadKnowledge() {
+      const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(knowledge, null, 2));
+      const dlAnchor = document.createElement('a');
+      dlAnchor.setAttribute("href", dataStr);
+      dlAnchor.setAttribute("download", "knowledge.json");
+      document.body.appendChild(dlAnchor);
+      dlAnchor.click();
+      dlAnchor.remove();
+    }
+
+    // Dark mode toggle
+    function toggleDarkMode() {
+      document.body.classList.toggle('dark-mode');
+      if (document.body.classList.contains('dark-mode')) {
+        darkModeBtn.textContent = "Disable Dark Mode";
+      } else {
+        darkModeBtn.textContent = "Enable Dark Mode";
+      }
+    }
+  </script>
+</body>
+</html>
