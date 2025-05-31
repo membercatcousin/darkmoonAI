@@ -26,7 +26,7 @@ def main():
             print("AI: Goodbye!")
             break
 
-        # Check for "translate", "in", and "arabic" in any order
+        # Check for "translate" and "in" in any order
         words = user_input.split()
         if all(word in words for word in ["translate", "in"]):
             print("AI: Please translate at https://translate.google.com")
