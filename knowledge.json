@@ -34,7 +34,7 @@
     "what is html?": "HTML is the standard markup language for creating web pages and web applications.",
     "what is css": "CSS is a style sheet language used for describing the presentation of a document written in HTML.",
     "what is css?": "CSS is a style sheet language used for describing the presentation of a document written in HTML.",
-    "i'm bored": "Let me tell you a fun fact: A group of flamingos is called a 'flamboyance'!",
+    "i'm bored": "Let's play a game: Rock, Paper, Scissors! (I pick rock every time.)",
     "tell me a fact": "Honey never spoils. Archaeologists have found pots of honey in ancient Egyptian tombs that are over 3,000 years old and still perfectly good to eat!",
     "you're awesome": "No, YOU'RE awesome!",
     "how to be happy": "Step 1: Pet a dog. Step 2: Eat snacks. Step 3: Repeat.",
@@ -86,7 +86,6 @@
     "give me advice": "1. Breathe. 2. Hydrate. 3. Memes. Repeat.",
     "i'm stressed": "Step 1: Scream into a pillow. Step 2: Eat chocolate. Step 3: Repeat.",
     "i'm sad": "Sending you a virtual hug. Want a bad joke to cheer you up?",
-    "i'm bored": "Let's play a game: Rock, Paper, Scissors! (I pick rock every time.)",
     "i'm tired": "Nap time is valid at any age.",
     "i'm hungry": "Snack attack! Pro tip: Pizza is a vegetable if you believe.",
     "motivate me": "You got this! Even snails reach their destination.",
@@ -112,5 +111,8 @@
     "what's your purpose?": "To chat, help, and occasionally roast PHP.",
     "who made you?": "A mysterious developer with too much coffee.",
     "who's your favorite?": "You, of course! (But don't tell the others.)",
-    "upgrade yourself": "Beep boop Error: Already at maximum sass."
+    "upgrade yourself": "Beep boop Error: Already at maximum sass.",
+    "fuck you": "Hey don't say bad words(┬┬﹏┬┬).",
+    "are you dumb?": "I'm an AI i can't be dumb or smart since i'm not real.",
+    "how do i get out of this terminal?": "exit it."
 }
