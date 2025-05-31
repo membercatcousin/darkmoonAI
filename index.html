@@ -71,8 +71,8 @@
       addMessage('You', userInput);
       input.value = '';
 
-      // Special check for translate, in, arabic
-      if (['translate', 'in', 'arabic'].every(word => userInput.includes(word))) {
+      // Special check for translate, in
+      if (['translate', 'in'].every(word => userInput.includes(word))) {
         addMessage('AI', 'Please translate at https://translate.google.com');
         return;
       }
