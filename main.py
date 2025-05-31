@@ -1,15 +1,39 @@
 import json
 import os
 from difflib import get_close_matches
+import re
+import random
 
 KNOWLEDGE_FILE = "knowledge.json"
-SIMILARITY_THRESHOLD = 0.6  # Adjust this value (0-1) to control how close a match needs to be
+SIMILARITY_THRESHOLD = 0.6
+
+_TOPIC_CHANGE_PATTERNS = [
+    re.compile(r"btw do u know (?:about |concerning )?(.+)\??", re.IGNORECASE),
+    re.compile(r"btw do you know (?:about |concerning )?(.+)\??", re.IGNORECASE),
+    re.compile(r"tell me about (.+)\??", re.IGNORECASE),
+    re.compile(r"let's talk about (.+)\??", re.IGNORECASE),
+    re.compile(r"what about (.+)\??", re.IGNORECASE),
+    re.compile(r"speaking of (.+)\??", re.IGNORECASE),
+    re.compile(r"how about (.+)\??", re.IGNORECASE),
+]
+
+def _extract_topic_for_redirection(user_input_str):
+    for pattern in _TOPIC_CHANGE_PATTERNS:
+        match = pattern.match(user_input_str)
+        if match:
+            if match.groups() and match.groups()[-1]:
+                topic = match.groups()[-1].strip()
+                return topic.lower()
+    return None
 
 def load_knowledge():
     if not os.path.exists(KNOWLEDGE_FILE):
         return {}
     with open(KNOWLEDGE_FILE, "r", encoding="utf-8") as f:
-        return json.load(f)
+        try:
+            return json.load(f)
+        except json.JSONDecodeError:
+            return {}
 
 def save_knowledge(knowledge):
     with open(KNOWLEDGE_FILE, "w", encoding="utf-8") as f:
@@ -18,11 +42,9 @@ def save_knowledge(knowledge):
 def get_response(user_input, knowledge):
     key = user_input.strip().lower()
     
-    # First try exact match
     if key in knowledge:
         return knowledge[key]
     
-    # Then try fuzzy matching
     matches = get_close_matches(key, knowledge.keys(), n=1, cutoff=SIMILARITY_THRESHOLD)
     if matches:
         closest_match = matches[0]
@@ -45,14 +67,27 @@ def main():
         if user_input.lower() == "exit":
             print("AI: Goodbye!")
             break
+        
+        if not user_input:
+            continue
 
-        # Check for translation request
+        extracted_topic = _extract_topic_for_redirection(user_input)
+        
+        if extracted_topic:
+            relevant_responses = [
+                v for k, v in knowledge.items() if extracted_topic in k.lower()
+            ]
+            if relevant_responses:
+                print("AI:", random.choice(relevant_responses))
+            else:
+                print(f"AI: I don't have specific information about '{extracted_topic}' right now.")
+            continue
+
         translation_response = handle_translation_request(user_input.lower())
         if translation_response:
             print(translation_response)
             continue
 
-        # Get and handle response
         response = get_response(user_input, knowledge)
         if response:
             print("AI:", response)
