@@ -41,7 +41,7 @@ def main():
             if new_response:
                 knowledge[user_input] = new_response
                 save_knowledge(knowledge)
-                print("AI: Got it! I'll remember that.")
+                print("AI: Got it! I'll remember that. Thank you!")
 
 if __name__ == "__main__":
     main()
