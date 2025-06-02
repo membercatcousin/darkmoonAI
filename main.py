@@ -65,7 +65,7 @@ def main():
     while True:
         user_input = input("You: ").strip()
         if user_input.lower() == "exit":
-            print("AI: Goodbye!")
+            print("AI: Goodbye! 👋")
             break
         
         if not user_input:
