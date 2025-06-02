@@ -48,7 +48,7 @@ def get_response(user_input, knowledge):
     matches = get_close_matches(key, knowledge.keys(), n=1, cutoff=SIMILARITY_THRESHOLD)
     if matches:
         closest_match = matches[0]
-        return f"Did you mean '{closest_match}'? {knowledge[closest_match]}"
+        return f"{knowledge[closest_match]}"
     
     return None
 
