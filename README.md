@@ -4,6 +4,6 @@ DarkMoon AI is an Artificial Intelegence made by DarkMoon Studios and Win11 frie
 
 <sup><sub>powered by deepseek-v3 !</sub></sup>
 
-![logo](https://cdn.discordapp.com/attachments/1373224673944535122/1378349261997084783/image.png?ex=683c4748&is=683af5c8&hm=ee2a985422455321877597f8521a6d6aff0378a53bb4ce98f85fe9db9347cce0&)
+![logo](https://cdn.discordapp.com/attachments/1373224673944535122/1378349261997084783/image.png?ex=68403bc8&is=683eea48&hm=d22cc772c164a32fa506c66c3bec68df00c242fd1433c9e3a5a5849a83d1d126&)
 
 ### WARNING : THIS AI IS NOT FOR COMMERCIAL USE AND ONLY FOR EDUCATIONAL/ENTERTAINMENT PURPUSES.
