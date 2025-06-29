@@ -1,12 +1,30 @@
 import json
 import os
-from difflib import get_close_matches
 import re
 import random
+import locale
+from difflib import get_close_matches
 
-KNOWLEDGE_FILE = "knowledge.json"
+# Detect system language
+def detect_language():
+    lang = locale.getdefaultlocale()[0]
+    if lang and lang.startswith("ar"):
+        return "ar"
+    return "en"
+
+# Initial language mode
+LANGUAGE_MODE = detect_language()
 SIMILARITY_THRESHOLD = 0.6
+KNOWLEDGE_FILES = {
+    "en": "knowledge.json",
+    "ar": "knowledge_ar.json"
+}
+JOKES_FILES = {
+    "en": "jokes.txt",
+    "ar": "jokes_ar.txt"
+}
 
+# Recognize topic-shift patterns
 _TOPIC_CHANGE_PATTERNS = [
     re.compile(r"btw do u know (?:about |concerning )?(.+)\??", re.IGNORECASE),
     re.compile(r"btw do you know (?:about |concerning )?(.+)\??", re.IGNORECASE),
@@ -20,36 +38,32 @@ _TOPIC_CHANGE_PATTERNS = [
 def _extract_topic_for_redirection(user_input_str):
     for pattern in _TOPIC_CHANGE_PATTERNS:
         match = pattern.match(user_input_str)
-        if match:
-            if match.groups() and match.groups()[-1]:
-                topic = match.groups()[-1].strip()
-                return topic.lower()
+        if match and match.groups()[-1]:
+            return match.groups()[-1].strip().lower()
     return None
 
 def load_knowledge():
-    if not os.path.exists(KNOWLEDGE_FILE):
+    file_path = KNOWLEDGE_FILES.get(LANGUAGE_MODE, "knowledge.json")
+    if not os.path.exists(file_path):
         return {}
-    with open(KNOWLEDGE_FILE, "r", encoding="utf-8") as f:
+    with open(file_path, "r", encoding="utf-8") as f:
         try:
             return json.load(f)
         except json.JSONDecodeError:
             return {}
 
 def save_knowledge(knowledge):
-    with open(KNOWLEDGE_FILE, "w", encoding="utf-8") as f:
+    file_path = KNOWLEDGE_FILES.get(LANGUAGE_MODE, "knowledge.json")
+    with open(file_path, "w", encoding="utf-8") as f:
         json.dump(knowledge, f, indent=4, ensure_ascii=False)
 
 def get_response(user_input, knowledge):
     key = user_input.strip().lower()
-    
     if key in knowledge:
         return knowledge[key]
-    
     matches = get_close_matches(key, knowledge.keys(), n=1, cutoff=SIMILARITY_THRESHOLD)
     if matches:
-        closest_match = matches[0]
-        return f"{knowledge[closest_match]}"
-    
+        return knowledge[matches[0]]
     return None
 
 def handle_translation_request(user_input):
@@ -59,45 +73,53 @@ def handle_translation_request(user_input):
     return None
 
 def load_jokes():
-    jokes_file = "jokes.txt"
+    jokes_file = JOKES_FILES.get(LANGUAGE_MODE, "jokes.txt")
     if not os.path.exists(jokes_file):
         return []
     with open(jokes_file, "r", encoding="utf-8") as f:
-        jokes = [line.strip() for line in f if line.strip()]
-    return jokes
+        return [line.strip() for line in f if line.strip()]
 
 def main():
+    global LANGUAGE_MODE
     knowledge = load_knowledge()
     jokes = load_jokes()
-    print("AI Assistant (type 'exit' to quit)")
-    
+
+    print("AI Assistant (type 'exit' to quit, or 'mode: ar' / 'mode: en' to switch language)")
+    print(f"🌍 Language mode: {'Arabic 🇲🇦' if LANGUAGE_MODE == 'ar' else 'English 🇬🇧'}")
+
     while True:
         user_input = input("You: ").strip()
-        if user_input.lower() == "exit":
-            print("AI: Goodbye! 👋")
-            break
-        
         if not user_input:
             continue
+        if user_input.lower() == "exit":
+            print("AI: Goodbye! 👋" if LANGUAGE_MODE == "en" else "الذكاء الاصطناعي: إلى اللقاء! 👋")
+            break
 
-        # Joke handling
+        if user_input.lower().startswith("mode:"):
+            mode = user_input.lower().split(":")[1].strip()
+            if mode in KNOWLEDGE_FILES:
+                LANGUAGE_MODE = mode
+                knowledge = load_knowledge()
+                jokes = load_jokes()
+                print(f"AI: Language set to {'Arabic 🇲🇦' if mode == 'ar' else 'English 🇬🇧'}")
+            else:
+                print("AI: ⚠️ Unknown mode. Use 'mode: ar' or 'mode: en'.")
+            continue
+
         if user_input.lower() == "tell me a joke":
             if jokes:
                 print("AI:", random.choice(jokes))
             else:
-                print("AI: Sorry, I don't have any jokes right now.")
+                print("AI: Sorry, I don't have jokes yet." if LANGUAGE_MODE == "en" else "عذرًا، لا يوجد نُكت حالياً 🤷‍♂️")
             continue
 
-        extracted_topic = _extract_topic_for_redirection(user_input)
-        
-        if extracted_topic:
-            relevant_responses = [
-                v for k, v in knowledge.items() if extracted_topic in k.lower()
-            ]
-            if relevant_responses:
-                print("AI:", random.choice(relevant_responses))
+        topic = _extract_topic_for_redirection(user_input)
+        if topic:
+            matches = [v for k, v in knowledge.items() if topic in k.lower()]
+            if matches:
+                print("AI:", random.choice(matches))
             else:
-                print(f"AI: I don't have specific information about '{extracted_topic}' right now.")
+                print(f"AI: I don't have info on '{topic}' yet." if LANGUAGE_MODE == "en" else f"الذكاء الاصطناعي: لا أملك معلومات عن '{topic}' حاليًا.")
             continue
 
         translation_response = handle_translation_request(user_input.lower())
@@ -109,12 +131,13 @@ def main():
         if response:
             print("AI:", response)
         else:
-            print("AI: 🔁 *beep boop* Error:I don't know how to respond to that. How should I reply?")
+            unknown = "I don't know how to respond to that. How should I reply?" if LANGUAGE_MODE == "en" else "🤖 لا أعرف كيف أرد على ذلك. علمني الرد المناسب:"
+            print(f"AI: {unknown}")
             new_response = input("Teach me: ").strip()
             if new_response:
-                knowledge[user_input.lower()] = new_response
+                knowledge[user_input.strip().lower()] = new_response
                 save_knowledge(knowledge)
-                print("AI: Got it! I'll remember that. Thank you!")
+                print("AI: Got it! I'll remember that." if LANGUAGE_MODE == "en" else "تم الحفظ! سأستخدم هذا الرد مستقبلاً ✅")
 
 if __name__ == "__main__":
     main()
