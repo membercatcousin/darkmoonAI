@@ -109,7 +109,7 @@ def main():
         if response:
             print("AI:", response)
         else:
-            print("AI: I don't know how to respond to that. How should I reply?")
+            print("AI: 🔁 *beep boop* Error:I don't know how to respond to that. How should I reply?")
             new_response = input("Teach me: ").strip()
             if new_response:
                 knowledge[user_input.lower()] = new_response
