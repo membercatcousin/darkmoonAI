@@ -3,7 +3,6 @@
     "hello": "👋 Hello! How are you doing today? 😊",
     "say uwu": "UwU 💖",
     "what is php?": "💻 PHP is a coding language used for websites! Mainly backend but can do frontend too! 🚀",
-    "what is php": "💻 PHP powers many websites! It's a server-side scripting language 🛠️",
     "what is rizz?": "💫 Rizz = short for charisma! That cool confidence vibe everyone wants ✨",
     "i say hmm you say?": "bo.",
     "i say hmm you say": "bo",
@@ -229,5 +228,6 @@
     "what is apple silicon": "🍏💻 Apple Silicon: Fast, efficient… and locks you deeper into the ecosystem. Welcome to the garden! 🌿",
     "what is ipad os": "📱 iPadOS: iOS with a multitasking identity crisis. 'Am I a computer? Am I a phone?' 🤔",
     "what is apple tv": "📺 Apple TV: For when you want to pay extra to see your Netflix subscription. 🍿",
-    "what is homepod": "🔊 HomePod: A $300 speaker that only works if you’re all-in on Apple. Siri included (for disappointment). 🎶"
+    "what is homepod": "🔊 HomePod: A $300 speaker that only works if you’re all-in on Apple. Siri included (for disappointment). 🎶",
+    "again":"😐just type the same promt🤷‍♂️"
 }
