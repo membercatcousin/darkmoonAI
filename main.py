@@ -58,8 +58,17 @@ def handle_translation_request(user_input):
         return "AI: Please translate at https://translate.google.com"
     return None
 
+def load_jokes():
+    jokes_file = "jokes.txt"
+    if not os.path.exists(jokes_file):
+        return []
+    with open(jokes_file, "r", encoding="utf-8") as f:
+        jokes = [line.strip() for line in f if line.strip()]
+    return jokes
+
 def main():
     knowledge = load_knowledge()
+    jokes = load_jokes()
     print("AI Assistant (type 'exit' to quit)")
     
     while True:
@@ -69,6 +78,14 @@ def main():
             break
         
         if not user_input:
+            continue
+
+        # Joke handling
+        if user_input.lower() == "tell me a joke":
+            if jokes:
+                print("AI:", random.choice(jokes))
+            else:
+                print("AI: Sorry, I don't have any jokes right now.")
             continue
 
         extracted_topic = _extract_topic_for_redirection(user_input)
