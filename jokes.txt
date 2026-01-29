@@ -27,3 +27,22 @@ Why did the database administrator leave his wife? She had one-to-many relations
 Why did the computer go to therapy? It had too many bytes! 🛋️💾
 Why did the developer go broke? Because he used up all his cache! 💸🖥️
 Why did the computer get angry at the printer? Because it didn't like its tone! 😡🖨️
+Why don't programmers like to go outside? The sun causes glare on their screens! ☀️🖥️
+Why did the web developer drown? He didn't <div> the pool into <span>s! 💧😵
+What's a programmer's favorite hangout spot? The Foo Bar! 🍻👨‍💻
+Why did the programmer get stuck in the shower? The bottle said: "Lather, Rinse, Repeat." 🧴♾️
+What's the object-oriented way to become wealthy? Inheritance! 💰👨‍👦
+How many programmers does it take to change a lightbulb? None, that's a hardware problem! 💡🤷‍♂️
+Why do programmers confuse Halloween and Christmas? Because OCT(31) == DEC(25)! 🎃🎄
+What's a coder's least favorite exercise? A syntax error! 🏋️‍♂️❌
+What do you call a bear with no teeth? A gummy bear! 🐻🦷
+Why don't scientists trust atoms? Because they make up everything! 👨‍🔬⚛️
+What do you call a fish wearing a bowtie? Sofishticated! 🐟🎀
+Why did the bicycle fall over? Because it was two-tired! 🚲😴
+What do you call a sleeping bull? A bulldozer! 🐂💤
+Why don't eggs tell jokes? They'd crack each other up! 🥚😂
+Why did the tomato turn red? Because it saw the salad dressing! 🍅🥗
+What do you call a fake noodle? An impasta! 🍝👻
+Why did the cookie go to the doctor? It was feeling crumbly! 🍪🏥
+What do you call cheese that isn't yours? Nacho cheese! 🧀🙅‍♂️
+Why did the golfer bring two pairs of pants? In case he got a hole in one! ⛳👖
